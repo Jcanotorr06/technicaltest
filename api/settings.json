@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "SQLConnectionString": "data source=DESKTOP-C4MPDVP\\SQLEXPRESS;initial catalog=TaskManagement;trusted_connection=true;Encrypt=True;TrustServerCertificate=True;",
+    "Environment": "Local",
+    "DatabaseName": "TaskManagement"
+  }
+}
