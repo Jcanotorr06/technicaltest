@@ -18,5 +18,7 @@ jobs:
         uses: biomejs/setup-biome@v2
         with:
           version: latest
+      - name: Migrate Biome Config
+        run: biome migrate --write --config-path ./client/biome.json
       - name: Run Biome
         run: biome ci ./client/src --config-path ./client/biome.json
