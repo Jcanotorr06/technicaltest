@@ -1,0 +1,24 @@
+name: Client Lint
+
+on:
+  push:
+    paths:
+      - client/**
+  pull_request:
+    paths:
+      - client/**
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+      - name: Migrate Biome Config
+        run: biome migrate --write --config-path ./client/biome.json
+      - name: Run Biome
+        run: biome ci ./client/src --config-path ./client/biome.json
