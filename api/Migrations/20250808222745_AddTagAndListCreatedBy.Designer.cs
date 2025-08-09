@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data.Context;
 
@@ -11,9 +12,11 @@ using api.Data.Context;
 namespace api.Migrations
 {
     [DbContext(typeof(TaskContext))]
-    partial class TaskContextModelSnapshot : ModelSnapshot
+    [Migration("20250808222745_AddTagAndListCreatedBy")]
+    partial class AddTagAndListCreatedBy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,7 +79,7 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("TagModel");
                 });
 
             modelBuilder.Entity("api.Models.Data.TaskModel", b =>
@@ -137,26 +140,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "",
-                            StatusName = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "",
-                            StatusName = "In Progress"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "",
-                            StatusName = "Completed"
-                        });
                 });
 
             modelBuilder.Entity("TagModelTaskModel", b =>
