@@ -12,6 +12,7 @@ var host = new HostBuilder()
     {
         var configuration = context.Configuration;
         services.AddScoped<ITaskService, TaskService>();
+        services.AddScoped<IListService, ListService>();
 
         services.AddEntityFrameworkInfrastructureAsync(configuration);
         services.AddApplicationInsightsTelemetryWorkerService();

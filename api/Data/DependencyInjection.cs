@@ -11,7 +11,7 @@ namespace api.Data
   {
     public static IServiceCollection AddEntityFrameworkInfrastructureAsync(this IServiceCollection services, IConfiguration configuration)
     {
-      var sqlConnectionString = Environment.GetEnvironmentVariable("SQLConnectionString");
+      var sqlConnectionString = "data source=DESKTOP-C4MPDVP\\SQLEXPRESS;initial catalog=TaskManagement;trusted_connection=true;Encrypt=True;TrustServerCertificate=True;";//Environment.GetEnvironmentVariable("SQLConnectionString");
       if (string.IsNullOrEmpty(sqlConnectionString))
       {
         throw new InvalidOperationException("SQLConnectionString environment variable is not set.");
@@ -21,6 +21,7 @@ namespace api.Data
       );
 
       services.AddTransient<ITaskRepository, TaskRepository>();
+      services.AddTransient<IListRepository, ListRepository>();
 
       return services;
     }

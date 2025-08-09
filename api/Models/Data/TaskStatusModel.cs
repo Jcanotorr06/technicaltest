@@ -9,6 +9,7 @@ namespace api.Models.Data
     public int Id { get; set; }
     public string StatusName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+
     [JsonIgnore]
     public ICollection<TaskModel> Tasks { get; set; } = new List<TaskModel>();
   }
