@@ -11,7 +11,6 @@ function Redirect() {
 
   // Redirect to home if user is authenticated
   if (accounts.length > 0) {
-    console.log("User is authenticated, redirecting to home", accounts[0]);
     return <Navigate to="/" replace />;
   }
 
