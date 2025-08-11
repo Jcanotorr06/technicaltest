@@ -26,5 +26,5 @@ jobs:
           version: latest
       - name: Run Biome
         working-directory: ${{ env.PROJECT_PATH }}
-        run: biome ci ./src
+        run: biome ci ./src --config-path ./biome.json
 
