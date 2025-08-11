@@ -1,16 +1,3 @@
-import { formatDate } from "@/lib/formatDate";
-import { useCompleteTask, useDeleteTask } from "@/services";
-import type { Task } from "@/types";
-import {
-	Calendar,
-	Check,
-	Ellipsis,
-	Loader,
-	Pencil,
-	Trash2,
-	User,
-} from "lucide-react";
-import type { FC } from "react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -23,6 +10,8 @@ import {
 	AlertDialogTrigger,
 	Badge,
 	Button,
+	Dialog,
+	DialogTrigger,
 	Separator,
 	Skeleton,
 } from "@/components/atoms";
@@ -33,6 +22,21 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/molecules";
 import { Status } from "@/lib/const";
+import { formatDate } from "@/lib/formatDate";
+import { cn } from "@/lib/utils";
+import { useCompleteTask, useDeleteTask } from "@/services";
+import type { Task } from "@/types";
+import {
+	Calendar,
+	Check,
+	Ellipsis,
+	Loader,
+	Pencil,
+	Trash2,
+	User,
+} from "lucide-react";
+import { type FC, useEffect, useState } from "react";
+import EditTaskForm from "./edit-task-form";
 
 type Props = {
 	task: Task;
@@ -40,13 +44,22 @@ type Props = {
 };
 
 const TaskCard: FC<Props> = (props) => {
-	const { task, showButtons } = props;
+	const { task, showButtons = true } = props;
+
+	const [showEditForm, setShowEditForm] = useState(false);
+	const [bounce, setBounce] = useState(false);
 
 	const taskStatus =
 		Object.values(Status).find((status) => status.id === task.statusId) ||
 		Status.PENDING;
 	const completeTask = useCompleteTask(task.id);
 	const deleteTask = useDeleteTask(task.id);
+
+	useEffect(() => {
+		if (window.location.hash === `#${task.id}`) {
+			setBounce(true);
+		}
+	}, []);
 
 	const handleComplete = async () => {
 		await completeTask.mutateAsync();
@@ -56,11 +69,25 @@ const TaskCard: FC<Props> = (props) => {
 		await deleteTask.mutateAsync();
 	};
 
+	const handleMouseEnter = () => {
+		if (bounce) setBounce(false);
+	};
+
 	if (deleteTask.isPending || completeTask.isPending) {
 		return <Skeleton className="w-full h-20" />;
 	}
 	return (
-		<div className="flex flex-row gap-1.5 mb-0.5 group/card relative">
+		// biome-ignore lint/a11y/noStaticElementInteractions: ignore
+		<div
+			id={task.id}
+			onMouseEnter={handleMouseEnter}
+			className={cn(
+				"flex flex-row gap-1.5 mb-0.5 group/card relative px-1",
+				bounce
+					? "bg-background rounded outline-offset-2 animate-bounce shadow"
+					: "",
+			)}
+		>
 			{task.statusId === Status.COMPLETED.id ? null : completeTask.isPending ? (
 				<div className="size-fit mt-3 animate-spin">
 					<Loader className="size-4 text-muted-foreground" />
@@ -99,30 +126,38 @@ const TaskCard: FC<Props> = (props) => {
 			</div>
 			{showButtons ? (
 				<AlertDialog>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="absolute right-2 top-2"
-							>
-								<Ellipsis className="size-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent>
-							<DropdownMenuItem>
-								<Pencil />
-								<span>Edit</span>
-							</DropdownMenuItem>
+					<Dialog open={showEditForm} onOpenChange={setShowEditForm}>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="absolute right-2 top-2"
+								>
+									<Ellipsis className="size-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent>
+								<DialogTrigger asChild>
+									<DropdownMenuItem>
+										<Pencil />
+										<span>Edit</span>
+									</DropdownMenuItem>
+								</DialogTrigger>
 
-							<AlertDialogTrigger asChild>
-								<DropdownMenuItem className="text-destructive">
-									<Trash2 className="text-destructive" />
-									<span>Delete</span>
-								</DropdownMenuItem>
-							</AlertDialogTrigger>
-						</DropdownMenuContent>
-					</DropdownMenu>
+								<AlertDialogTrigger asChild>
+									<DropdownMenuItem className="text-destructive">
+										<Trash2 className="text-destructive" />
+										<span>Delete</span>
+									</DropdownMenuItem>
+								</AlertDialogTrigger>
+							</DropdownMenuContent>
+						</DropdownMenu>
+						<EditTaskForm
+							task={task}
+							handleClose={() => setShowEditForm(false)}
+						/>
+					</Dialog>
 					<AlertDialogContent>
 						<AlertDialogHeader>
 							<AlertDialogTitle>

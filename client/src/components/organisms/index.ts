@@ -5,4 +5,5 @@ export { default as AppSidebar } from "./app-sidebar";
 export { default as Authorization } from "./authentication";
 export { default as EditTaskForm } from "./edit-task-form";
 export { default as NavLists } from "./nav-lists";
+export { default as NavSearch } from "./nav-search";
 export { default as TaskCard } from "./task-card";

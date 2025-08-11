@@ -1,4 +1,10 @@
-import { useState, type FC } from "react";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTrigger,
+} from "@/components/atoms";
 import {
 	NavUser,
 	Sidebar,
@@ -10,13 +16,12 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/molecules";
-import {
-	Button,
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTrigger,
-} from "@/components/atoms";
+import { AddTaskForm, NavSearch } from "@/components/organisms";
+import { useToken } from "@/context";
+import { getListsQueryOptions, getPublicListsQueryOptions } from "@/services";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import {
 	Calendar1,
 	CalendarDays,
@@ -24,13 +29,8 @@ import {
 	CirclePlus,
 	Home,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { type FC, useState } from "react";
 import NavLists from "./nav-lists";
-import { useToken } from "@/context";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { getListsQueryOptions, getPublicListsQueryOptions } from "@/services";
-import { AddTaskForm } from "@/components/organisms";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 const AppSidebar: FC = () => {
 	const { headers } = useToken();
@@ -50,14 +50,14 @@ const AppSidebar: FC = () => {
 					<SidebarGroupContent className="flex flex-col gap-2">
 						<SidebarMenu>
 							<SidebarMenuItem className="flex flex-col gap-2">
-								<SidebarMenuButton tooltip="Add Task" asChild>
-									<div>
+								<SidebarMenuButton tooltip="Add Task" asChild className="p-0">
+									<div className="w-full p-0">
 										<Dialog open={open} onOpenChange={setOpen}>
 											<DialogTrigger asChild>
 												<Button
-													variant="ghost"
+													variant="default"
 													size="lg"
-													className="justify-start"
+													className="justify-start w-full"
 												>
 													<CirclePlus className="size-4" />
 													Add Task
@@ -75,7 +75,11 @@ const AppSidebar: FC = () => {
 										</Dialog>
 									</div>
 								</SidebarMenuButton>
+								<SidebarMenuButton asChild>
+									<NavSearch />
+								</SidebarMenuButton>
 							</SidebarMenuItem>
+							<SidebarMenuItem></SidebarMenuItem>
 							<SidebarMenuItem>
 								<SidebarMenuButton asChild>
 									<Link to="/" activeProps={{ className: "bg-sidebar-accent" }}>

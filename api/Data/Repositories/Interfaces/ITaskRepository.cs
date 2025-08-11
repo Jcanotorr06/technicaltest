@@ -17,5 +17,6 @@ namespace api.Data.Repositories.Interfaces
     Task<TaskModel> CreateTaskAsync(TaskModel entity, CancellationToken cancellationToken = default);
     Task<TaskModel> UpdateTaskAsync(TaskModel entity, CancellationToken cancellationToken = default);
     Task<bool> DeleteTaskAsync(TaskModel entity, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TaskModel>> GetUserTasks(UserModel user, string? searchTerm = null, CancellationToken cancellationToken = default);
   }
 }

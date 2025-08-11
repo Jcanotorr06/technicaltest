@@ -3,14 +3,18 @@ using api.Data.Repositories.Interfaces;
 using api.Models.Data;
 using api.Models.Requests;
 using api.Models.Responses;
+using Microsoft.EntityFrameworkCore;
 using Models.Static;
 
 namespace api.Data.Repositories.Implementations
 {
   public class TaskRepository : EfRepository<TaskModel>, ITaskRepository
   {
+    private readonly TaskContext _context;
     public TaskRepository(TaskContext context) : base(context)
-    { }
+    {
+      _context = context;
+    }
 
     public async Task<IEnumerable<TaskModel>> GetAllTasksAsync(CancellationToken cancellationToken = default)
     {
@@ -46,6 +50,21 @@ namespace api.Data.Repositories.Implementations
     {
       var tasks = await FindManyPaginatedAsync(t => t.Tags.Any(tag => tag.Id == tagId), t => t._List, sortPagination, cancellationToken);
       return tasks;
+    }
+
+    public async Task<IEnumerable<TaskModel>> GetUserTasks(UserModel user, string? searchTerm = null, CancellationToken cancellationToken = default)
+    {
+      var userId = $"{user.Name};{user.Email};{user.Id}";
+      var tasksQuery = _context.Tasks.Include(t => t._List).Where(t => t.CreatedBy == userId || t._List.IsPublic).Where(t => t.Status != (int)TaskStatusEnum.Completed).AsEnumerable();
+      if (!string.IsNullOrEmpty(searchTerm))
+      {
+        tasksQuery = tasksQuery.Where(t => t.Title.Contains(searchTerm) || t.Description.Contains(searchTerm));
+      }
+      if (tasksQuery == null)
+      {
+        return Enumerable.Empty<TaskModel>();
+      }
+      return tasksQuery.ToList();
     }
 
 
