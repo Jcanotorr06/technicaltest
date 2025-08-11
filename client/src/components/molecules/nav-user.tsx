@@ -21,8 +21,8 @@ import { useJwt } from "react-jwt";
 
 const NavUser: FC = () => {
 	const { accounts, instance } = useMsal();
-	const {token} = useToken()
-	const {decodedToken} = useJwt<Token>(token)
+	const { token } = useToken();
+	const { decodedToken } = useJwt<Token>(token);
 	const { isMobile } = useSidebar();
 	const name = decodedToken?.name || "User";
 	const email = decodedToken?.preferred_username || "user@example.com";
