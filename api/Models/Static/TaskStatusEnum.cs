@@ -1,4 +1,4 @@
-namespace Models.Static
+namespace api.Models.Static
 {
   public enum TaskStatusEnum
   {
