@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from "./routes/__root"
 import { Route as RedirectRouteImport } from "./routes/redirect_"
 import { Route as AboutRouteImport } from "./routes/about"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as UpcomingIndexRouteImport } from "./routes/upcoming/index"
+import { Route as TodayIndexRouteImport } from "./routes/today/index"
+import { Route as CompletedIndexRouteImport } from "./routes/completed/index"
+import { Route as ListListIdRouteImport } from "./routes/list/$listId"
 
 const RedirectRoute = RedirectRouteImport.update({
   id: "/redirect_",
@@ -28,35 +32,93 @@ const IndexRoute = IndexRouteImport.update({
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
+const UpcomingIndexRoute = UpcomingIndexRouteImport.update({
+  id: "/upcoming/",
+  path: "/upcoming/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TodayIndexRoute = TodayIndexRouteImport.update({
+  id: "/today/",
+  path: "/today/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompletedIndexRoute = CompletedIndexRouteImport.update({
+  id: "/completed/",
+  path: "/completed/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListListIdRoute = ListListIdRouteImport.update({
+  id: "/list/$listId",
+  path: "/list/$listId",
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/redirect": typeof RedirectRoute
+  "/list/$listId": typeof ListListIdRoute
+  "/completed": typeof CompletedIndexRoute
+  "/today": typeof TodayIndexRoute
+  "/upcoming": typeof UpcomingIndexRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/redirect": typeof RedirectRoute
+  "/list/$listId": typeof ListListIdRoute
+  "/completed": typeof CompletedIndexRoute
+  "/today": typeof TodayIndexRoute
+  "/upcoming": typeof UpcomingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/redirect_": typeof RedirectRoute
+  "/list/$listId": typeof ListListIdRoute
+  "/completed/": typeof CompletedIndexRoute
+  "/today/": typeof TodayIndexRoute
+  "/upcoming/": typeof UpcomingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/about" | "/redirect"
+  fullPaths:
+    | "/"
+    | "/about"
+    | "/redirect"
+    | "/list/$listId"
+    | "/completed"
+    | "/today"
+    | "/upcoming"
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/about" | "/redirect"
-  id: "__root__" | "/" | "/about" | "/redirect_"
+  to:
+    | "/"
+    | "/about"
+    | "/redirect"
+    | "/list/$listId"
+    | "/completed"
+    | "/today"
+    | "/upcoming"
+  id:
+    | "__root__"
+    | "/"
+    | "/about"
+    | "/redirect_"
+    | "/list/$listId"
+    | "/completed/"
+    | "/today/"
+    | "/upcoming/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   RedirectRoute: typeof RedirectRoute
+  ListListIdRoute: typeof ListListIdRoute
+  CompletedIndexRoute: typeof CompletedIndexRoute
+  TodayIndexRoute: typeof TodayIndexRoute
+  UpcomingIndexRoute: typeof UpcomingIndexRoute
 }
 
 declare module "@tanstack/react-router" {
@@ -82,6 +144,34 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/upcoming/": {
+      id: "/upcoming/"
+      path: "/upcoming"
+      fullPath: "/upcoming"
+      preLoaderRoute: typeof UpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/today/": {
+      id: "/today/"
+      path: "/today"
+      fullPath: "/today"
+      preLoaderRoute: typeof TodayIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/completed/": {
+      id: "/completed/"
+      path: "/completed"
+      fullPath: "/completed"
+      preLoaderRoute: typeof CompletedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/list/$listId": {
+      id: "/list/$listId"
+      path: "/list/$listId"
+      fullPath: "/list/$listId"
+      preLoaderRoute: typeof ListListIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +179,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   RedirectRoute: RedirectRoute,
+  ListListIdRoute: ListListIdRoute,
+  CompletedIndexRoute: CompletedIndexRoute,
+  TodayIndexRoute: TodayIndexRoute,
+  UpcomingIndexRoute: UpcomingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
