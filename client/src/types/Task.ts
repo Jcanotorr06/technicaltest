@@ -6,6 +6,7 @@ export type Task = {
 	status: "Pending" | "In Progress" | "Completed";
 	statusId: number;
 	listId: string;
+	listName?: string;
 	createdBy: string;
 	assignedTo: string;
 	order: number;
@@ -15,6 +16,13 @@ export type Task = {
 export type CreateTaskRequest = Omit<
 	Task,
 	"id" | "createdBy" | "order" | "tags" | "statusId" | "status"
+> & {
+	status: number;
+};
+
+export type UpdateTaskRequest = Omit<
+	Task,
+	"createdBy" | "tags" | "statusId" | "status"
 > & {
 	status: number;
 };
