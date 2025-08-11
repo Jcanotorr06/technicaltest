@@ -46,7 +46,6 @@ const Authorization: FC<PropsWithChildren> = ({ children }) => {
       instance
         .acquireTokenSilent(accessTokenRequest)
         .then((response) => {
-          console.log("Setting token", response.accessToken);
           setToken(response.accessToken);
         })
         .catch((e) => {
