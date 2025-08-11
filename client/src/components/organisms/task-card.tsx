@@ -21,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  Badge,
   Button,
   Separator,
   Skeleton,
@@ -31,11 +32,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/molecules";
+import { Status } from "@/lib/const";
+
 type Props = {
   task: Task;
+  showButtons?: boolean;
 };
+
 const TaskCard: FC<Props> = (props) => {
-  const { task } = props;
+  const { task, showButtons } = props;
+
+  const taskStatus = Object.values(Status).find((status) => status.id === task.statusId) || Status.PENDING;
   const completeTask = useCompleteTask(task.id);
   const deleteTask = useDeleteTask(task.id);
 
@@ -52,7 +59,7 @@ const TaskCard: FC<Props> = (props) => {
   }
   return (
     <div className="flex flex-row gap-1.5 mb-0.5 group/card relative">
-      {task.statusId === 3 ? null : completeTask.isPending ? (
+      {task.statusId === Status.COMPLETED.id ? null : completeTask.isPending ? (
         <div className="size-fit mt-3 animate-spin">
           <Loader className="size-4 text-muted-foreground" />
         </div>
@@ -69,8 +76,11 @@ const TaskCard: FC<Props> = (props) => {
         </button>
       )}
       <div className="flex flex-col p-2">
-        <div className="w-full text-sm font-semibold p-[1px] pl-0 wrap-break-word line-clamp-4">
+        <div className="w-full text-sm font-semibold p-[1px] pl-0 wrap-break-word line-clamp-4 flex flex-row items-center gap-1">
           {task.title}
+          <Badge variant={taskStatus.variant}>
+            {taskStatus.label}
+          </Badge>
         </div>
         <div className="text-xs text-muted-foreground w-full whitespace-break-spaces wrap-break-word line-clamp-4">
           {task.description}
@@ -83,47 +93,51 @@ const TaskCard: FC<Props> = (props) => {
           <span>{task.createdBy.split(";")[0]}</span>
         </div>
       </div>
-      <AlertDialog>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-2"
-            >
-              <Ellipsis className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Pencil />
-              <span>Edit</span>
-            </DropdownMenuItem>
-
-            <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="text-destructive">
-                <Trash2 className="text-destructive" />
-                <span>Delete</span>
+      {showButtons ? (
+        <AlertDialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-2"
+              >
+                <Ellipsis className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Pencil />
+                <span>Edit</span>
               </DropdownMenuItem>
-            </AlertDialogTrigger>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to delete this task?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This task will be permanently
-              deleted from our system.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem className="text-destructive">
+                  <Trash2 className="text-destructive" />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you sure you want to delete this task?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This task will be permanently
+                deleted from our system.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ) : null}
     </div>
   );
 };
