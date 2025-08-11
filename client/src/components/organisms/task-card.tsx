@@ -79,10 +79,12 @@ const TaskCard: FC<Props> = (props) => {
 			)}
 			<div className="flex flex-col p-2">
 				<div className="w-full p-[1px] pl-0 flex flex-row items-center gap-1.5">
-          <span className="text-sm font-semibold wrap-break-word line-clamp-4">
-					  {task.title}
-          </span>
-					<Badge className="text-[10px] py-[1px]" variant={taskStatus.variant}>{taskStatus.label}</Badge>
+					<span className="text-sm font-semibold wrap-break-word line-clamp-4">
+						{task.title}
+					</span>
+					<Badge className="text-[10px] py-[1px]" variant={taskStatus.variant}>
+						{taskStatus.label}
+					</Badge>
 				</div>
 				<div className="text-xs text-muted-foreground w-full whitespace-break-spaces wrap-break-word line-clamp-4">
 					{task.description}
