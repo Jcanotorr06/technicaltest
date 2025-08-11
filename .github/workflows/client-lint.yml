@@ -8,10 +8,15 @@ on:
   pull_request:
     paths:
       - client/**
+env:
+  PROJECT_PATH: "./client"
 
 jobs:
   quality:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PATH }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +24,7 @@ jobs:
         uses: biomejs/setup-biome@v2
         with:
           version: latest
-      - name: Migrate Biome Config
-        run: biome migrate --write --config-path ./client/biome.json
       - name: Run Biome
-        run: biome ci ./client/src --config-path ./client/biome.json
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: biome ci ./src
+
