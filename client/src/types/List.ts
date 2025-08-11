@@ -1,10 +1,10 @@
 export type List = {
-  id: string;
-  name: string;
-  taskCount: number;
+	id: string;
+	name: string;
+	taskCount: number;
 };
 
 export type CreateListRequest = {
-  name: string;
-  isPublic: boolean;
+	name: string;
+	isPublic: boolean;
 };

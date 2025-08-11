@@ -16,44 +16,44 @@ import { Toaster } from "./components/atoms";
 
 // Create a new router instance
 export const router = createRouter({
-  routeTree,
-  defaultPreload: "intent",
-  defaultPreloadStaleTime: 0,
-  scrollRestoration: true,
-  context: {
-    queryClient,
-    // biome-ignore lint/style/noNonNullAssertion: Initial value is undefined because the TokenProvider is not yet mounted
-    tokenContext: undefined!,
-  },
+	routeTree,
+	defaultPreload: "intent",
+	defaultPreloadStaleTime: 0,
+	scrollRestoration: true,
+	context: {
+		queryClient,
+		// biome-ignore lint/style/noNonNullAssertion: Initial value is undefined because the TokenProvider is not yet mounted
+		tokenContext: undefined!,
+	},
 });
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
+	interface Register {
+		router: typeof router;
+	}
 }
 
 const rootElement = document.getElementById("root");
 
 // Render the app
 if (rootElement && !rootElement?.innerHTML) {
-  const root = createRoot(rootElement);
-  root.render(
-    <StrictMode>
-      <AuthProvider>
-        <TokenProvider>
-          <Authorization>
-            <QueryClientProvider client={queryClient}>
-              <App />
-              <Toaster />
-              {import.meta.env.DEV ? (
-                <ReactQueryDevtools initialIsOpen={false} />
-              ) : null}
-            </QueryClientProvider>
-          </Authorization>
-        </TokenProvider>
-      </AuthProvider>
-    </StrictMode>
-  );
+	const root = createRoot(rootElement);
+	root.render(
+		<StrictMode>
+			<AuthProvider>
+				<TokenProvider>
+					<Authorization>
+						<QueryClientProvider client={queryClient}>
+							<App />
+							<Toaster />
+							{import.meta.env.DEV ? (
+								<ReactQueryDevtools initialIsOpen={false} />
+							) : null}
+						</QueryClientProvider>
+					</Authorization>
+				</TokenProvider>
+			</AuthProvider>
+		</StrictMode>,
+	);
 }

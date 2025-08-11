@@ -1,263 +1,263 @@
 import { useToken } from "@/context";
 import type { CreateTaskRequest, PagedList, Task } from "@/types";
 import {
-  mutationOptions,
-  type QueryClient,
-  queryOptions,
-  useMutation,
-  useQuery,
-  useQueryClient,
+	mutationOptions,
+	type QueryClient,
+	queryOptions,
+	useMutation,
+	useQuery,
+	useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 type QueryParams<T> = {
-  limit: number;
-  offset: number;
-  sortBy: keyof T;
-  order: "asc" | "desc";
+	limit: number;
+	offset: number;
+	sortBy: keyof T;
+	order: "asc" | "desc";
 };
 
 export const getTaskQueryOptions = (id: string, headers: Headers) =>
-  queryOptions({
-    queryKey: ["task", id],
-    queryFn: async () => {
-      const url = `${import.meta.env.VITE_API_URL}/tasks/${id}`;
-      const request = new Request(url, {
-        method: "GET",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to fetch task");
-      }
-      return response.json() as Promise<Task>;
-    },
-  });
+	queryOptions({
+		queryKey: ["task", id],
+		queryFn: async () => {
+			const url = `${import.meta.env.VITE_API_URL}/tasks/${id}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch task");
+			}
+			return response.json() as Promise<Task>;
+		},
+	});
 
 export const getListTasksQueryOptions = (
-  id: string,
-  queryParams: QueryParams<Task>,
-  headers: Headers
+	id: string,
+	queryParams: QueryParams<Task>,
+	headers: Headers,
 ) =>
-  queryOptions({
-    queryKey: ["tasks", "list", id],
-    queryFn: async () => {
-      const queryString = new URLSearchParams({
-        limit: queryParams.limit.toString(),
-        offset: queryParams.offset.toString(),
-        sortBy: "Order",
-        order: queryParams.order,
-      }).toString();
-      const url = `${
-        import.meta.env.VITE_API_URL
-      }/list/${id}/tasks?${queryString}`;
-      const request = new Request(url, {
-        method: "GET",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      return response.json() as Promise<PagedList<Task>>;
-    },
-  });
+	queryOptions({
+		queryKey: ["tasks", "list", id],
+		queryFn: async () => {
+			const queryString = new URLSearchParams({
+				limit: queryParams.limit.toString(),
+				offset: queryParams.offset.toString(),
+				sortBy: "Order",
+				order: queryParams.order,
+			}).toString();
+			const url = `${
+				import.meta.env.VITE_API_URL
+			}/list/${id}/tasks?${queryString}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch tasks");
+			}
+			return response.json() as Promise<PagedList<Task>>;
+		},
+	});
 
 export const getTodayTasksQueryOptions = (
-  queryParams: QueryParams<Task>,
-  headers: Headers
+	queryParams: QueryParams<Task>,
+	headers: Headers,
 ) =>
-  queryOptions({
-    queryKey: ["tasks", "today"],
-    queryFn: async () => {
-      const queryString = new URLSearchParams({
-        limit: queryParams.limit.toString(),
-        offset: queryParams.offset.toString(),
-        sortBy: "Order",
-        order: queryParams.order,
-      }).toString();
-      const url = `${import.meta.env.VITE_API_URL}/tasks/today?${queryString}`;
-      const request = new Request(url, {
-        method: "GET",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      return response.json() as Promise<PagedList<Task>>;
-    },
-  });
+	queryOptions({
+		queryKey: ["tasks", "today"],
+		queryFn: async () => {
+			const queryString = new URLSearchParams({
+				limit: queryParams.limit.toString(),
+				offset: queryParams.offset.toString(),
+				sortBy: "Order",
+				order: queryParams.order,
+			}).toString();
+			const url = `${import.meta.env.VITE_API_URL}/tasks/today?${queryString}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch tasks");
+			}
+			return response.json() as Promise<PagedList<Task>>;
+		},
+	});
 
 export const getUpcomingTasksQueryOptions = (
-  queryParams: QueryParams<Task>,
-  headers: Headers
+	queryParams: QueryParams<Task>,
+	headers: Headers,
 ) =>
-  queryOptions({
-    queryKey: ["tasks", "upcoming"],
-    queryFn: async () => {
-      const queryString = new URLSearchParams({
-        limit: queryParams.limit.toString(),
-        offset: queryParams.offset.toString(),
-        sortBy: "Order",
-        order: queryParams.order,
-      }).toString();
-      const url = `${
-        import.meta.env.VITE_API_URL
-      }/tasks/upcoming?${queryString}`;
-      const request = new Request(url, {
-        method: "GET",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      return response.json() as Promise<PagedList<Task>>;
-    },
-  });
+	queryOptions({
+		queryKey: ["tasks", "upcoming"],
+		queryFn: async () => {
+			const queryString = new URLSearchParams({
+				limit: queryParams.limit.toString(),
+				offset: queryParams.offset.toString(),
+				sortBy: "Order",
+				order: queryParams.order,
+			}).toString();
+			const url = `${
+				import.meta.env.VITE_API_URL
+			}/tasks/upcoming?${queryString}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch tasks");
+			}
+			return response.json() as Promise<PagedList<Task>>;
+		},
+	});
 
 export const getCompletedTasksQueryOptions = (
-  queryParams: QueryParams<Task>,
-  headers: Headers
+	queryParams: QueryParams<Task>,
+	headers: Headers,
 ) =>
-  queryOptions({
-    queryKey: ["tasks", "completed"],
-    queryFn: async () => {
-      const queryString = new URLSearchParams({
-        limit: queryParams.limit.toString(),
-        offset: queryParams.offset.toString(),
-        sortBy: "Order",
-        order: queryParams.order,
-      }).toString();
-      const url = `${
-        import.meta.env.VITE_API_URL
-      }/tasks/completed?${queryString}`;
-      const request = new Request(url, {
-        method: "GET",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      return response.json() as Promise<PagedList<Task>>;
-    },
-  });
+	queryOptions({
+		queryKey: ["tasks", "completed"],
+		queryFn: async () => {
+			const queryString = new URLSearchParams({
+				limit: queryParams.limit.toString(),
+				offset: queryParams.offset.toString(),
+				sortBy: "Order",
+				order: queryParams.order,
+			}).toString();
+			const url = `${
+				import.meta.env.VITE_API_URL
+			}/tasks/completed?${queryString}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch tasks");
+			}
+			return response.json() as Promise<PagedList<Task>>;
+		},
+	});
 
 export const createTaskMutationOptions = (
-  headers: Headers,
-  queryClient: QueryClient
+	headers: Headers,
+	queryClient: QueryClient,
 ) =>
-  mutationOptions({
-    mutationKey: ["createTask"],
-    mutationFn: async (data: CreateTaskRequest) => {
-      const url = `${import.meta.env.VITE_API_URL}/tasks`;
-      const request = new Request(url, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(data),
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to create task");
-      }
-      return response.json() as Promise<Task>;
-    },
-    onSettled: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["tasks", "list", data?.listId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["tasks"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["task", data?.id],
-      });
-    },
-    onSuccess: (data) => {
-      toast.success(`Task "${data.title}" created successfully`);
-    },
-    onError: () => {
-      toast.error(`Failed to create task`);
-    },
-  });
+	mutationOptions({
+		mutationKey: ["createTask"],
+		mutationFn: async (data: CreateTaskRequest) => {
+			const url = `${import.meta.env.VITE_API_URL}/tasks`;
+			const request = new Request(url, {
+				method: "POST",
+				headers,
+				body: JSON.stringify(data),
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to create task");
+			}
+			return response.json() as Promise<Task>;
+		},
+		onSettled: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ["tasks", "list", data?.listId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["tasks"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["task", data?.id],
+			});
+		},
+		onSuccess: (data) => {
+			toast.success(`Task "${data.title}" created successfully`);
+		},
+		onError: () => {
+			toast.error(`Failed to create task`);
+		},
+	});
 
 export const completeTaskMutationOptions = (
-  id: string,
-  headers: Headers,
-  queryClient: QueryClient
+	id: string,
+	headers: Headers,
+	queryClient: QueryClient,
 ) =>
-  mutationOptions({
-    mutationKey: ["completeTask", id],
-    mutationFn: async () => {
-      const url = `${import.meta.env.VITE_API_URL}/tasks/${id}/complete`;
-      const request = new Request(url, {
-        method: "POST",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok) {
-        throw new Error("Failed to create task");
-      }
-      return response.json() as Promise<Task>;
-    },
-    onSettled: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["tasks", "list", data?.listId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["tasks"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["task", data?.id],
-      });
-    },
-    onSuccess: (data) => {
-      toast.success(`Task "${data.title}" completed successfully`);
-    },
-    onError: () => {
-      toast.error(`Failed to complete task`);
-    },
-  });
+	mutationOptions({
+		mutationKey: ["completeTask", id],
+		mutationFn: async () => {
+			const url = `${import.meta.env.VITE_API_URL}/tasks/${id}/complete`;
+			const request = new Request(url, {
+				method: "POST",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to create task");
+			}
+			return response.json() as Promise<Task>;
+		},
+		onSettled: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ["tasks", "list", data?.listId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["tasks"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["task", data?.id],
+			});
+		},
+		onSuccess: (data) => {
+			toast.success(`Task "${data.title}" completed successfully`);
+		},
+		onError: () => {
+			toast.error(`Failed to complete task`);
+		},
+	});
 
 export const deleteTaskMutationOptions = (
-  id: string,
-  headers: Headers,
-  queryClient: QueryClient
+	id: string,
+	headers: Headers,
+	queryClient: QueryClient,
 ) =>
-  mutationOptions({
-    mutationKey: ["deleteTask", id],
-    mutationFn: async () => {
-      const url = `${import.meta.env.VITE_API_URL}/tasks/${id}`;
-      const request = new Request(url, {
-        method: "DELETE",
-        headers,
-      });
-      const response = await fetch(request);
-      if (!response.ok || response.status !== 204) {
-        throw new Error("Failed to delete task");
-      }
-      return response.json() as Promise<Task>;
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["tasks"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["tasks", id],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["lists"],
-      });
-    },
-    onSuccess: (data) => {
-      toast.success(`Task "${data.title}" deleted successfully`);
-    },
-    onError: () => {
-      toast.error(`Failed to delete task`);
-    },
-  });
+	mutationOptions({
+		mutationKey: ["deleteTask", id],
+		mutationFn: async () => {
+			const url = `${import.meta.env.VITE_API_URL}/tasks/${id}`;
+			const request = new Request(url, {
+				method: "DELETE",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok || response.status !== 204) {
+				throw new Error("Failed to delete task");
+			}
+			return response.json() as Promise<Task>;
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["tasks"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["tasks", id],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["lists"],
+			});
+		},
+		onSuccess: (data) => {
+			toast.success(`Task "${data.title}" deleted successfully`);
+		},
+		onError: () => {
+			toast.error(`Failed to delete task`);
+		},
+	});
 
 /**
  * Custom hook to get a task by ID
@@ -265,8 +265,8 @@ export const deleteTaskMutationOptions = (
  * @returns The task data
  */
 export const useGetTask = (id: string) => {
-  const { headers } = useToken();
-  return useQuery(getTaskQueryOptions(id, headers));
+	const { headers } = useToken();
+	return useQuery(getTaskQueryOptions(id, headers));
 };
 
 /**
@@ -276,8 +276,8 @@ export const useGetTask = (id: string) => {
  * @returns The task list data
  */
 export const useListTasks = (id: string, queryParams: QueryParams<Task>) => {
-  const { headers } = useToken();
-  return useQuery(getListTasksQueryOptions(id, queryParams, headers));
+	const { headers } = useToken();
+	return useQuery(getListTasksQueryOptions(id, queryParams, headers));
 };
 
 /**
@@ -286,8 +286,8 @@ export const useListTasks = (id: string, queryParams: QueryParams<Task>) => {
  * @returns The upcoming tasks data
  */
 export const useUpcomingTasks = (queryParams: QueryParams<Task>) => {
-  const { headers } = useToken();
-  return useQuery(getUpcomingTasksQueryOptions(queryParams, headers));
+	const { headers } = useToken();
+	return useQuery(getUpcomingTasksQueryOptions(queryParams, headers));
 };
 
 /**
@@ -296,8 +296,8 @@ export const useUpcomingTasks = (queryParams: QueryParams<Task>) => {
  * @returns The today's tasks data
  */
 export const useTodayTasks = (queryParams: QueryParams<Task>) => {
-  const { headers } = useToken();
-  return useQuery(getTodayTasksQueryOptions(queryParams, headers));
+	const { headers } = useToken();
+	return useQuery(getTodayTasksQueryOptions(queryParams, headers));
 };
 
 /**
@@ -306,8 +306,8 @@ export const useTodayTasks = (queryParams: QueryParams<Task>) => {
  * @returns The completed tasks data
  */
 export const useCompletedTasks = (queryParams: QueryParams<Task>) => {
-  const { headers } = useToken();
-  return useQuery(getCompletedTasksQueryOptions(queryParams, headers));
+	const { headers } = useToken();
+	return useQuery(getCompletedTasksQueryOptions(queryParams, headers));
 };
 
 /**
@@ -315,9 +315,9 @@ export const useCompletedTasks = (queryParams: QueryParams<Task>) => {
  * @returns The mutation object
  */
 export const useCreateTask = () => {
-  const { headers } = useToken();
-  const queryClient = useQueryClient();
-  return useMutation(createTaskMutationOptions(headers, queryClient));
+	const { headers } = useToken();
+	const queryClient = useQueryClient();
+	return useMutation(createTaskMutationOptions(headers, queryClient));
 };
 
 /**
@@ -326,9 +326,9 @@ export const useCreateTask = () => {
  * @returns The mutation object
  */
 export const useCompleteTask = (id: string) => {
-  const { headers } = useToken();
-  const queryClient = useQueryClient();
-  return useMutation(completeTaskMutationOptions(id, headers, queryClient));
+	const { headers } = useToken();
+	const queryClient = useQueryClient();
+	return useMutation(completeTaskMutationOptions(id, headers, queryClient));
 };
 
 /**
@@ -337,7 +337,7 @@ export const useCompleteTask = (id: string) => {
  * @returns The mutation object
  */
 export const useDeleteTask = (id: string) => {
-  const { headers } = useToken();
-  const queryClient = useQueryClient();
-  return useMutation(deleteTaskMutationOptions(id, headers, queryClient));
+	const { headers } = useToken();
+	const queryClient = useQueryClient();
+	return useMutation(deleteTaskMutationOptions(id, headers, queryClient));
 };

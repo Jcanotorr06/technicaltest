@@ -68,7 +68,7 @@ namespace api.Data.Repositories.Implementations
     {
       var today = DateTime.UtcNow.Date;
       var userId = $"{user.Name};{user.Email};{user.Id}";
-      var tasks = await FindManyPaginatedAsync(t => t.DueDate.Value.Date == today && t.CreatedBy == userId, t => t._List, sortPagination, cancellationToken);
+      var tasks = await FindManyPaginatedAsync(t => t.DueDate.Value.Date == today && t.CreatedBy == userId && t.Status != (int)TaskStatusEnum.Completed, t => t._List, sortPagination, cancellationToken);
       return tasks;
     }
 
@@ -76,7 +76,7 @@ namespace api.Data.Repositories.Implementations
     {
       var today = DateTime.UtcNow.Date;
       var userId = $"{user.Name};{user.Email};{user.Id}";
-      var tasks = await FindManyPaginatedAsync(t => t.DueDate.Value.Date > today && t.CreatedBy == userId, t => t._List, sortPagination, cancellationToken);
+      var tasks = await FindManyPaginatedAsync(t => t.DueDate.Value.Date > today && t.CreatedBy == userId && t.Status != (int)TaskStatusEnum.Completed, t => t._List, sortPagination, cancellationToken);
       return tasks;
     }
   }
