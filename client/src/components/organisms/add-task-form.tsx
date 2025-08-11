@@ -194,7 +194,6 @@ const AddTaskForm: FC<Props> = (props) => {
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
-                            {/** biome-ignore lint/a11y/useSemanticElements:  Button */}
                             <Button
                               variant="outline"
                               role="combobox"
