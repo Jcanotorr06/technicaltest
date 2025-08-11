@@ -1,0 +1,1348 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OpenAPI Document on Azure Functions",
+    "description": "This is the OpenAPI Document on Azure Functions",
+    "version": "1.0.0"
+  },
+  "host": "localhost:7257",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/lists": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Retrieves all lists.",
+        "description": "Retrieves all lists.",
+        "operationId": "GetAllLists",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of all lists.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/readListDto"
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Creates a new list.",
+        "description": "Creates a new list.",
+        "operationId": "CreateList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The details of the list to create.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createListDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The created list details.",
+            "schema": {
+              "$ref": "#/definitions/readListDto"
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Updates an existing list.",
+        "description": "Updates an existing list.",
+        "operationId": "UpdateList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The details of the list to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateListDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated list details.",
+            "schema": {
+              "$ref": "#/definitions/readListDto"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/user/lists": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Retrieves all lists created by a specific user.",
+        "description": "Retrieves all lists created by a specific user.",
+        "operationId": "GetUserLists",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of lists created by the specified user.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/readListDto"
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/public/lists": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Retrieves all public lists.",
+        "description": "Retrieves all public lists.",
+        "operationId": "GetPublicLists",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of public lists.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/readListDto"
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/lists/{listId}": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Retrieves a list by its ID.",
+        "description": "Retrieves a list by its ID.",
+        "operationId": "GetListById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "listId",
+            "description": "The ID of the list to retrieve.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list details.",
+            "schema": {
+              "$ref": "#/definitions/readListDto"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Deletes a list by its ID.",
+        "description": "Deletes a list by its ID.",
+        "operationId": "DeleteList",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "listId",
+            "description": "The ID of the list to delete.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "List deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/void"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get all tasks",
+        "description": "Retrieves all tasks.",
+        "operationId": "GetAllTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/readTaskDto"
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Create a new task",
+        "description": "Creates a new task.",
+        "operationId": "CreateTask",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The details of the task to create.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createTaskDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The created task.",
+            "schema": {
+              "$ref": "#/definitions/readTaskDto"
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Update an existing task",
+        "description": "Updates an existing task.",
+        "operationId": "UpdateTask",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The details of the task to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateTaskDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated task.",
+            "schema": {
+              "$ref": "#/definitions/readTaskDto"
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Task not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/list/{listId}/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get tasks by list ID",
+        "description": "Retrieves tasks by list ID.",
+        "operationId": "GetTasksByListId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "listId",
+            "description": "The ID of the list to retrieve tasks from.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/status/{status}/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get tasks by status",
+        "description": "Gets tasks by their status.",
+        "operationId": "GetTasksByStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "status",
+            "description": "The status of the tasks to retrieve.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tags/{tag}/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get tasks by tag",
+        "description": "Gets tasks by their tag.",
+        "operationId": "GetTasksByTag",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tagId",
+            "description": "The tag of the tasks to retrieve.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "List not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/today": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get today's tasks",
+        "description": "Retrieves today's tasks.",
+        "operationId": "GetTodayTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of today's tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "No tasks found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/upcoming": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get upcoming tasks",
+        "description": "Retrieves upcoming tasks.",
+        "operationId": "GetUpcomingTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of upcoming tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "No tasks found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/completed": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get completed tasks",
+        "description": "Retrieves completed tasks.",
+        "operationId": "GetCompletedTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of tasks to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of tasks to skip.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "The field to sort by.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "description": "The sort order (asc or desc).",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of completed tasks.",
+            "schema": {
+              "$ref": "#/definitions/pagedList_readTaskDto"
+            }
+          },
+          "404": {
+            "description": "No tasks found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/user/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get user tasks",
+        "description": "Retrieves tasks for a specific user.",
+        "operationId": "GetUserTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchTerm",
+            "description": "The search term to filter tasks.",
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user tasks.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/readTaskDto"
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{taskId}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get task by ID",
+        "description": "Retrieves a task by its ID.",
+        "operationId": "WGetTaskById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "description": "The ID of the task to retrieve.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The task details.",
+            "schema": {
+              "$ref": "#/definitions/readTaskDto"
+            }
+          },
+          "404": {
+            "description": "Task not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Delete a task",
+        "description": "Deletes a task.",
+        "operationId": "DeleteTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "listId",
+            "description": "The ID of the list to delete.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Task deleted successfully.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Task not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{taskId}/complete": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Complete a task",
+        "description": "Marks a task as completed.",
+        "operationId": "CompleteTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token for authorization.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The completed task.",
+            "schema": {
+              "$ref": "#/definitions/readTaskDto"
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Task not found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "createListDto": {
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "createTaskDto": {
+      "required": [
+        "title"
+      ],
+      "type": "object",
+      "properties": {
+        "title": {
+          "maxLength": 100,
+          "minLength": 0,
+          "pattern": "^[a-zA-Z0-9\\s]+$",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 0,
+          "pattern": "^[a-zA-Z0-9\\s.,!?]+$",
+          "type": "string"
+        },
+        "dueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "listId": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "string"
+        }
+      }
+    },
+    "pagedList_readTaskDto": {
+      "type": "object",
+      "properties": {
+        "currentPage": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pageSize": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalPages": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "hasPrevious": {
+          "type": "boolean"
+        },
+        "hasNext": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/readTaskDto"
+          }
+        }
+      }
+    },
+    "readListDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "taskCount": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "readTagDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "readTaskDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "dueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "statusId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "listId": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "listName": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "string"
+        },
+        "order": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/readTagDto"
+          }
+        }
+      }
+    },
+    "updateListDto": {
+      "required": [
+        "id",
+        "name"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "updateTaskDto": {
+      "required": [
+        "id",
+        "title"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 100,
+          "minLength": 0,
+          "pattern": "^[a-zA-Z0-9\\s]+$",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 0,
+          "pattern": "^[a-zA-Z0-9\\s.,!?]+$",
+          "type": "string"
+        },
+        "dueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "listId": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "order": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "assignedTo": {
+          "type": "string"
+        }
+      }
+    },
+    "void": {
+      "type": "object"
+    }
+  }
+}

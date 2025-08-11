@@ -175,6 +175,12 @@ namespace api.Functions
       );
     }
 
+    /// <summary>
+    /// Retrieves today's tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="req">The HTTP request.</param>
+    /// <param name="context">The function context.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     [Function("GetTodayTasks")]
     [OpenApiOperation(operationId: "GetTodayTasks", tags: new string[] { "Tasks" }, Description = "Retrieves today's tasks.", Summary = "Get today's tasks")]
     [OpenApiParameter(name: "Authorization", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "Bearer token for authorization.")]
@@ -211,6 +217,12 @@ namespace api.Functions
       );
     }
 
+    /// <summary>
+    /// Retrieves upcoming tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="req">The HTTP request.</param>
+    /// <param name="context">The function context.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     [Function("GetUpcomingTasks")]
     [OpenApiOperation(operationId: "GetUpcomingTasks", tags: new string[] { "Tasks" }, Description = "Retrieves upcoming tasks.", Summary = "Get upcoming tasks")]
     [OpenApiParameter(name: "Authorization", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "Bearer token for authorization.")]
@@ -247,6 +259,12 @@ namespace api.Functions
       );
     }
 
+    /// <summary>
+    /// Retrieves completed tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="req">The HTTP request.</param>
+    /// <param name="context">The function context.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     [Function("GetCompletedTasks")]
     [OpenApiOperation(operationId: "GetCompletedTasks", tags: new string[] { "Tasks" }, Description = "Retrieves completed tasks.", Summary = "Get completed tasks")]
     [OpenApiParameter(name: "Authorization", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "Bearer token for authorization.")]
