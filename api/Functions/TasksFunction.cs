@@ -285,6 +285,40 @@ namespace api.Functions
     }
 
     /// <summary>
+    /// Retrieves tasks for a specific user.
+    /// </summary>
+    /// <param name="req">The HTTP request.</param>
+    /// <param name="context">The function context.</param>
+    /// <param name="userId">The ID of the user to retrieve tasks for.</param>
+    /// <returns>An action result containing the list of user tasks or an error response.</returns>
+    [Function("GetUserTasks")]
+    [OpenApiOperation(operationId: "GetUserTasks", tags: new string[] { "Tasks" }, Description = "Retrieves tasks for a specific user.", Summary = "Get user tasks")]
+    [OpenApiParameter(name: "searchTerm", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The search term to filter tasks.")]
+    [OpenApiParameter(name: "Authorization", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "Bearer token for authorization.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IEnumerable<ReadTaskDto>), Description = "List of user tasks.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(string), Description = "An error occurred.")]
+    public async Task<IActionResult> GetUserTasks([HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/tasks")] HttpRequest req,
+      FunctionContext context
+    )
+    {
+      var token = req.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+      return await TryExecute(
+        async () =>
+        {
+          _logger.LogInformation("C# HTTP trigger function processed a request.");
+          var searchTerm = req.Query.Get<string>("searchTerm");
+          var user = JWTHelper.GetUserFromToken(token);
+
+          var tasks = await _taskService.GetUserTasksAsync(user, searchTerm, req.HttpContext.RequestAborted);
+          return new OkObjectResult(tasks);
+        },
+        context.InvocationId,
+        _logger,
+        token
+      );
+    }
+
+    /// <summary>
     /// Retrieves a task by its ID.
     /// </summary>
     /// <param name="req">The HTTP request.</param>

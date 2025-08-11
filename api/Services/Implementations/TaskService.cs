@@ -267,5 +267,11 @@ namespace api.Services.Implementations
       var updatedTask = await _taskRepository.UpdateTaskAsync(existingTask, cancellationToken);
       return new ReadTaskDto(updatedTask);
     }
+
+    public async Task<IEnumerable<ReadTaskDto>> GetUserTasksAsync(UserModel user, string? searchTerm = null, CancellationToken cancellationToken = default)
+    {
+      var tasks = await _taskRepository.GetUserTasks(user, searchTerm, cancellationToken);
+      return tasks.Select(t => new ReadTaskDto(t));
+    }
   }
 }
