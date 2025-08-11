@@ -1,21 +1,26 @@
-import { useMsal } from "@azure/msal-react";
-import { Button } from "@/components/atoms";
-import { createFileRoute } from "@tanstack/react-router";
-import { useGetLists } from "@/services";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  loader: () => {
+    return {
+      crumb: "Home",
+    };
+  },
 });
 
 function Index() {
-  const { instance } = useMsal();
-  const listsQuery = useGetLists();
-
-  console.log("Lists Query:", listsQuery);
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
-      <Button onClick={() => instance.logout()}>Sign out</Button>
+      <Link
+        to="/list/$listId"
+        params={{
+          listId: "123",
+        }}
+      >
+        Go to List
+      </Link>
     </div>
   );
 }
