@@ -4,8 +4,8 @@ import { router } from "./main";
 import { useToken } from "./context";
 
 const App: FC = () => {
-  const tokenContext = useToken();
-  return <RouterProvider router={router} context={{ tokenContext }} />;
+	const tokenContext = useToken();
+	return <RouterProvider router={router} context={{ tokenContext }} />;
 };
 
 App.displayName = "App";
