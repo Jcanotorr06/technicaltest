@@ -18,7 +18,7 @@ import { AddListForm } from "@/components/organisms";
 import type { List } from "@/types";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, CirclePlus, Hash } from "lucide-react";
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 
 type Props = {
 	label: string;
@@ -64,6 +64,9 @@ const NavLists: FC<Props> = (props) => {
 											>
 												<Hash className="size-4 opacity-60 text-sidebar-foreground" />
 												<span className="font-medium">{list.name}</span>
+												<span className="ml-auto text-xs text-muted-foreground">
+													{list.taskCount}
+												</span>
 											</Link>
 										</SidebarMenuButton>
 									))}
