@@ -191,6 +191,11 @@ namespace api.Services.Implementations
         throw new UnauthorizedAccessException("You are not allowed to update this task.");
       }
 
+      if (existingTask.Status == (int)TaskStatusEnum.Completed)
+      {
+        throw new InvalidOperationException("Cannot update a completed task.");
+      }
+
       existingTask.Title = updateTaskDto.Title;
       existingTask.Description = updateTaskDto.Description;
       existingTask.DueDate = updateTaskDto.DueDate;
@@ -221,6 +226,11 @@ namespace api.Services.Implementations
         throw new UnauthorizedAccessException("You are not allowed to delete this task.");
       }
 
+      if (existingTask.Status == (int)TaskStatusEnum.Completed)
+      {
+        throw new InvalidOperationException("Cannot delete a completed task.");
+      }
+
       return await _taskRepository.DeleteTaskAsync(existingTask, cancellationToken);
     }
 
@@ -235,6 +245,11 @@ namespace api.Services.Implementations
       if (existingTask == null)
       {
         throw new KeyNotFoundException($"Task with ID {taskId} not found.");
+      }
+
+      if (existingTask.Status == (int)TaskStatusEnum.Completed)
+      {
+        throw new InvalidOperationException("Cannot complete a completed task.");
       }
 
       var list = await _listRepository.GetListByIdAsync(existingTask.ListId, cancellationToken);
