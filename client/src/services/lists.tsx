@@ -14,7 +14,6 @@ export const getListsQueryOptions = (headers: Headers) =>
 	queryOptions({
 		queryKey: ["lists"],
 		queryFn: async () => {
-			console.log("Fetching user lists", headers);
 			const url = `${import.meta.env.VITE_API_URL}/user/lists`;
 			const request = new Request(url, {
 				method: "GET",
