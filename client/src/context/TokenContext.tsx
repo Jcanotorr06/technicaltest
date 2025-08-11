@@ -8,7 +8,7 @@ import {
   type PropsWithChildren,
 } from "react";
 
-type TokenContextType = {
+export type TokenContextType = {
   token: string;
   headers: Headers;
   setToken: (token: string) => void;

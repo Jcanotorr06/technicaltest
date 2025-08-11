@@ -1,2 +1,7 @@
 export { default as AuthProvider } from "./AuthProvider";
-export { TokenProvider, useToken } from "./TokenContext";
+export {
+  TokenProvider,
+  useToken,
+  TokenContext,
+  type TokenContextType,
+} from "./TokenContext";
