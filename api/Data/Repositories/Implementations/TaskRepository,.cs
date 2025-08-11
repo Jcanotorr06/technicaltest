@@ -4,7 +4,7 @@ using api.Models.Data;
 using api.Models.Requests;
 using api.Models.Responses;
 using Microsoft.EntityFrameworkCore;
-using Models.Static;
+using api.Models.Static;
 
 namespace api.Data.Repositories.Implementations
 {

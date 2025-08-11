@@ -4,7 +4,7 @@ using api.Models.Dto.Task;
 using api.Models.Requests;
 using api.Models.Responses;
 using api.Services.Interfaces;
-using Models.Static;
+using api.Models.Static;
 
 namespace api.Services.Implementations
 {
