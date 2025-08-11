@@ -12,16 +12,20 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/molecules";
+import { useToken } from "@/context";
+import type { Token } from "@/types";
 import { useMsal } from "@azure/msal-react";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import type { FC } from "react";
+import { useJwt } from "react-jwt";
 
 const NavUser: FC = () => {
 	const { accounts, instance } = useMsal();
+	const {token} = useToken()
+	const {decodedToken} = useJwt<Token>(token)
 	const { isMobile } = useSidebar();
-	const account = accounts[0];
-	const name = account?.name || "User";
-	const email = account?.username || "user@example.com";
+	const name = decodedToken?.name || "User";
+	const email = decodedToken?.preferred_username || "user@example.com";
 	const initials = name
 		.split(" ")
 		.map((word) => word.charAt(0).toUpperCase())
