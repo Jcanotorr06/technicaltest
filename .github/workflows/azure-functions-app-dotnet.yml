@@ -62,7 +62,7 @@ jobs:
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet tool install --global dotnet-ef
           dotnet tool restore
-          dotnet ef database update --connection ${{ secrets.SQLCONNECTIONSTRING }} --configuration Release
+          dotnet ef database update --connection "${{ secrets.SQLCONNECTIONSTRING }}" --configuration Release
           popd
 
       - name: "Run Azure Functions Action"
