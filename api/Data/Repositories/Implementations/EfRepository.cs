@@ -43,6 +43,18 @@ namespace api.Data.Repositories.Implementations
     }
 
     /// <summary>
+    /// Finds a single entity that matches the specified predicate and includes related entities.
+    /// </summary>
+    /// <param name="predicate">The predicate to filter the entities.</param>
+    /// <param name="include">The related entities to include.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The entity that matches the predicate, or null if not found.</returns>
+    public async Task<T> FindOneAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> include, CancellationToken cancellationToken = default)
+    {
+      return await _context.Set<T>().Include(include).FirstOrDefaultAsync(predicate, cancellationToken);
+    }
+
+    /// <summary>
     /// Finds multiple entities that match the specified predicate.
     /// </summary>
     /// <param name="predicate">The predicate to filter the entities.</param>
@@ -50,7 +62,19 @@ namespace api.Data.Repositories.Implementations
     /// <returns>A list of entities that match the predicate.</returns>
     public async Task<IEnumerable<T>> FindManyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
     {
-      return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
+      return await _context.Set<T>().Include(e => e).Where(predicate).ToListAsync(cancellationToken);
+    }
+    /// <summary>
+    /// Finds multiple entities that match the specified predicate.
+    /// </summary>
+    /// <param name="predicate">The predicate to filter the entities.</param>
+    /// <param name="include">The related entities to include.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of entities that match the predicate.</returns>
+
+    public async Task<IEnumerable<T>> FindManyAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> include, CancellationToken cancellationToken = default)
+    {
+      return await _context.Set<T>().Include(include).Where(predicate).ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -73,6 +97,28 @@ namespace api.Data.Repositories.Implementations
 
       return await PagedList<T>.CreateAsync(query, sortPagination.Page, sortPagination.Limit, cancellationToken);
     }
+    /// <summary>
+    /// Finds multiple entities that match the specified predicate.
+    /// </summary>
+    /// <param name="predicate">The predicate to filter the entities</param>
+    /// <param name="include">The related entities to include</param>
+    /// <param name="sortPagination">The pagination and sorting information</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>A paged list of entities that match the predicate</returns>
+
+    public async Task<PagedList<T>> FindManyPaginatedAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> include, SortPagination sortPagination, CancellationToken cancellationToken = default)
+    {
+      var query = _context.Set<T>().Where(predicate).Include(include).Order();
+
+      // Apply sorting
+      if (!string.IsNullOrEmpty(sortPagination.SortBy))
+      {
+        var isDescending = sortPagination.SortOrder?.ToLower() == "desc";
+        query = isDescending ? query.OrderByDescending(e => EF.Property<object>(e, sortPagination.SortBy)) : query.OrderBy(e => EF.Property<object>(e, sortPagination.SortBy));
+      }
+
+      return await PagedList<T>.CreateAsync(query, sortPagination.Page, sortPagination.Limit, cancellationToken);
+    }
 
     /// <summary>
     /// Gets all entities of type T.
@@ -82,6 +128,17 @@ namespace api.Data.Repositories.Implementations
     public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
       return await _context.Set<T>().ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets all entities of type T, including related entities.
+    /// </summary>
+    /// <param name="include">The related entities to include.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of all entities of type T, including related entities.</returns>
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> include, CancellationToken cancellationToken = default)
+    {
+      return await _context.Set<T>().Include(include).ToListAsync(cancellationToken);
     }
 
     /// <summary>

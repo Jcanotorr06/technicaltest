@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace api.Models.Data
+namespace api.Models.Dto.Task
 {
-  [Table("Tasks")]
-  public class TaskModel
+  public class UpdateTaskDto
   {
+    [Required(ErrorMessage = "Task ID is required.")]
     public Guid Id { get; set; }
     [Required(ErrorMessage = "Title is required.")]
     [StringLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
@@ -21,11 +19,7 @@ namespace api.Models.Data
 #nullable disable
     public int Status { get; set; }
     public Guid ListId { get; set; }
-    public string CreatedBy { get; set; } = string.Empty;
-    public string AssignedTo { get; set; } = string.Empty;
     public int Order { get; set; }
-    public TaskStatusModel _Status { get; set; }
-    public ListModel _List { get; set; }
-    public ICollection<TagModel> Tags { get; set; } = new List<TagModel>();
+    public string AssignedTo { get; set; } = string.Empty;
   }
 }

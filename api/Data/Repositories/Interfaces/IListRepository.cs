@@ -6,6 +6,7 @@ namespace api.Data.Repositories.Interfaces
   {
     Task<ListModel> GetListByIdAsync(Guid listId, CancellationToken cancellationToken = default);
     Task<IEnumerable<ListModel>> GetAllListsAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<ListModel>> GetPublicListsAsync(CancellationToken cancellationToken = default);
     Task<IEnumerable<ListModel>> GetUserListsAsync(string userId, CancellationToken cancellationToken = default);
     Task<ListModel> CreateListAsync(ListModel entity, CancellationToken cancellationToken = default);
     Task<ListModel> UpdateListAsync(ListModel entity, CancellationToken cancellationToken = default);

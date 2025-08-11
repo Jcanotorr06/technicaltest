@@ -56,6 +56,15 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
 
+      - name: "Run DB Migrations"
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet tool install --global dotnet-ef
+          dotnet tool restore
+          dotnet ef database update --connection ${{ secrets.SQLConnectionString }} --configuration Release
+          popd
+
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1
         id: fa
