@@ -9,6 +9,7 @@ namespace api.Services.Interfaces
   {
     Task<ReadTaskDto> GetTaskByIdAsync(Guid taskId, UserModel user, CancellationToken cancellationToken = default);
     Task<IEnumerable<ReadTaskDto>> GetAllTasksAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<ReadTaskDto>> GetUserTasksAsync(UserModel user, string? searchTerm = null, CancellationToken cancellationToken = default);
     Task<PagedList<ReadTaskDto>> GetTasksByListIdAsync(Guid listId, SortPagination sortPagination, UserModel user, CancellationToken cancellationToken = default);
     Task<PagedList<ReadTaskDto>> GetTasksByStatusAsync(int statusId, SortPagination sortPagination, CancellationToken cancellationToken = default);
     Task<PagedList<ReadTaskDto>> GetTasksByTagAsync(Guid tagId, SortPagination sortPagination, CancellationToken cancellationToken = default);
