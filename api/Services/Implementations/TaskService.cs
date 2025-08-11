@@ -8,6 +8,9 @@ using api.Models.Static;
 
 namespace api.Services.Implementations
 {
+  /// <summary>
+  /// Service for managing tasks.
+  /// </summary>
   public class TaskService : ITaskService
   {
     private readonly ITaskRepository _taskRepository;
@@ -19,6 +22,11 @@ namespace api.Services.Implementations
       _listRepository = listRepository;
     }
 
+    /// <summary>
+    /// Retrieves all tasks asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A list of all tasks.</returns>
     public async Task<IEnumerable<ReadTaskDto>> GetAllTasksAsync(CancellationToken cancellationToken = default)
     {
       var response = new List<ReadTaskDto>();
@@ -30,6 +38,16 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves a task by its ID asynchronously.
+    /// </summary>
+    /// <param name="taskId">The ID of the task to retrieve.</param>
+    /// <param name="user">The user requesting the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The requested task.</returns>
+    /// <exception cref="ArgumentException">Thrown when the task ID is invalid.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when the task is not found.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the user is not authorized to access the task.</exception>
     public async Task<ReadTaskDto> GetTaskByIdAsync(Guid taskId, UserModel user, CancellationToken cancellationToken = default)
     {
       if (taskId == Guid.Empty)
@@ -52,6 +70,17 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks for a specific list asynchronously.
+    /// </summary>
+    /// <param name="listId">The ID of the list to retrieve tasks from.</param>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="user">The user requesting the tasks.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks for the specified list.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list ID is invalid.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when the list is not found.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the user is not authorized to access the list.</exception>
     public async Task<PagedList<ReadTaskDto>> GetTasksByListIdAsync(Guid listId, SortPagination sortPagination, UserModel user, CancellationToken cancellationToken = default)
     {
       if (listId == Guid.Empty)
@@ -80,6 +109,15 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks with a specific status asynchronously.
+    /// </summary>
+    /// <param name="statusId">The ID of the status to filter tasks by.</param>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks with the specified status.</returns>
+    /// <exception cref="ArgumentException">Thrown when the status ID is invalid.</exception>
+    /// <exception cref="ArgumentException">Thrown when the status ID is invalid.</exception>
     public async Task<PagedList<ReadTaskDto>> GetTasksByStatusAsync(int statusId, SortPagination sortPagination, CancellationToken cancellationToken = default)
     {
       if (statusId <= 0)
@@ -97,6 +135,14 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks with a specific tag asynchronously.
+    /// </summary>
+    /// <param name="tagId">The ID of the tag to filter tasks by.</param>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks with the specified tag.</returns>
+    /// <exception cref="ArgumentException">Thrown when the tag ID is invalid.</exception>
     public async Task<PagedList<ReadTaskDto>> GetTasksByTagAsync(Guid tagId, SortPagination sortPagination, CancellationToken cancellationToken = default)
     {
       if (tagId == Guid.Empty)
@@ -114,6 +160,13 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="user">The user to filter tasks by.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks for the specified user.</returns>
     public async Task<PagedList<ReadTaskDto>> GetTodayTasksAsync(SortPagination sortPagination, UserModel user, CancellationToken cancellationToken = default)
     {
       var tasks = await _taskRepository.GetTodayTasksAsync(sortPagination, user, cancellationToken);
@@ -126,6 +179,13 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="user">The user to filter tasks by.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks for the specified user.</returns>
     public async Task<PagedList<ReadTaskDto>> GetUpcomingTasksAsync(SortPagination sortPagination, UserModel user, CancellationToken cancellationToken = default)
     {
       var tasks = await _taskRepository.GetUpcomingTasksAsync(sortPagination, user, cancellationToken);
@@ -138,6 +198,13 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Retrieves all tasks for a specific user asynchronously.
+    /// </summary>
+    /// <param name="sortPagination">Sorting and pagination information.</param>
+    /// <param name="user">The user to filter tasks by.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paged list of tasks for the specified user.</returns>
     public async Task<PagedList<ReadTaskDto>> GetCompletedTasksAsync(SortPagination sortPagination, UserModel user, CancellationToken cancellationToken = default)
     {
       var tasks = await _taskRepository.GetTasksByStatusAsync((int)TaskStatusEnum.Completed, sortPagination, user, cancellationToken);
@@ -150,6 +217,14 @@ namespace api.Services.Implementations
       return response;
     }
 
+    /// <summary>
+    /// Creates a new task asynchronously.
+    /// </summary>
+    /// <param name="createTaskDto">The data transfer object containing the task information.</param>
+    /// <param name="user">The user creating the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The created task.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when createTaskDto is null.</exception>
     public async Task<ReadTaskDto> CreateTaskAsync(CreateTaskDto createTaskDto, UserModel user, CancellationToken cancellationToken = default)
     {
       if (createTaskDto == null)
@@ -173,6 +248,17 @@ namespace api.Services.Implementations
       return new ReadTaskDto(createdTask);
     }
 
+    /// <summary>
+    /// Updates an existing task asynchronously.
+    /// </summary>
+    /// <param name="updateTaskDto">The data transfer object containing the updated task information.</param>
+    /// <param name="user">The user updating the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The updated task.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when updateTaskDto is null.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when the task is not found.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the user is not authorized to update the task.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the task is completed.</exception>
     public async Task<ReadTaskDto> UpdateTaskAsync(UpdateTaskDto updateTaskDto, UserModel user, CancellationToken cancellationToken = default)
     {
       if (updateTaskDto == null)
@@ -208,6 +294,17 @@ namespace api.Services.Implementations
       return new ReadTaskDto(updatedTask);
     }
 
+    /// <summary>
+    /// Completes a task asynchronously.
+    /// </summary>
+    /// <param name="taskId">The ID of the task to complete.</param>
+    /// <param name="user">The user completing the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The completed task.</returns>
+    /// <exception cref="ArgumentException">Thrown when taskId is empty.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when the task is not found.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the user is not authorized to complete the task.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the task is already completed.</exception>
     public async Task<bool> DeleteTaskAsync(Guid taskId, UserModel user, CancellationToken cancellationToken = default)
     {
       if (taskId == Guid.Empty)
@@ -234,6 +331,17 @@ namespace api.Services.Implementations
       return await _taskRepository.DeleteTaskAsync(existingTask, cancellationToken);
     }
 
+    /// <summary>
+    /// Completes a task asynchronously.
+    /// </summary>
+    /// <param name="taskId">The ID of the task to complete.</param>
+    /// <param name="user">The user completing the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The completed task.</returns>
+    /// <exception cref="ArgumentException">Thrown when taskId is empty.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when the task is not found.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the task is already completed.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the user is not authorized to complete the task.</exception>
     public async Task<ReadTaskDto> CompleteTaskAsync(Guid taskId, UserModel user, CancellationToken cancellationToken = default)
     {
       if (taskId == Guid.Empty)
@@ -268,6 +376,13 @@ namespace api.Services.Implementations
       return new ReadTaskDto(updatedTask);
     }
 
+    /// <summary>
+    /// Completes a task asynchronously.
+    /// </summary>
+    /// <param name="user">The user completing the task.</param>
+    /// <param name="searchTerm">The search term to filter tasks.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The completed task.</returns>
     public async Task<IEnumerable<ReadTaskDto>> GetUserTasksAsync(UserModel user, string? searchTerm = null, CancellationToken cancellationToken = default)
     {
       var tasks = await _taskRepository.GetUserTasks(user, searchTerm, cancellationToken);
