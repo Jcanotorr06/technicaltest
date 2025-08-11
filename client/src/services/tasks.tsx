@@ -1,5 +1,10 @@
 import { useToken } from "@/context";
-import type { CreateTaskRequest, PagedList, Task } from "@/types";
+import type {
+	CreateTaskRequest,
+	PagedList,
+	Task,
+	UpdateTaskRequest,
+} from "@/types";
 import {
 	mutationOptions,
 	type QueryClient,
@@ -145,6 +150,27 @@ export const getCompletedTasksQueryOptions = (
 		},
 	});
 
+export const getUserTasksQueryOptions = (search: string, headers: Headers) =>
+	queryOptions({
+		queryKey: ["user", search],
+		enabled: !!search && search.length > 0,
+		queryFn: async () => {
+			const queryString = new URLSearchParams({
+				search,
+			}).toString();
+			const url = `${import.meta.env.VITE_API_URL}/user/tasks?${queryString}`;
+			const request = new Request(url, {
+				method: "GET",
+				headers,
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to fetch tasks");
+			}
+			return response.json() as Promise<Task[]>;
+		},
+	});
+
 export const createTaskMutationOptions = (
 	headers: Headers,
 	queryClient: QueryClient,
@@ -180,6 +206,44 @@ export const createTaskMutationOptions = (
 		},
 		onError: () => {
 			toast.error(`Failed to create task`);
+		},
+	});
+
+export const updateTaskMutationOptions = (
+	headers: Headers,
+	queryClient: QueryClient,
+) =>
+	mutationOptions({
+		mutationKey: ["updateTask"],
+		mutationFn: async (data: UpdateTaskRequest) => {
+			const url = `${import.meta.env.VITE_API_URL}/tasks`;
+			const request = new Request(url, {
+				method: "PUT",
+				headers,
+				body: JSON.stringify(data),
+			});
+			const response = await fetch(request);
+			if (!response.ok) {
+				throw new Error("Failed to update task");
+			}
+			return response.json() as Promise<Task>;
+		},
+		onSettled: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ["tasks", "list", data?.listId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["tasks"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["task", data?.id],
+			});
+		},
+		onSuccess: (data) => {
+			toast.success(`Task "${data.title}" updated successfully`);
+		},
+		onError: () => {
+			toast.error(`Failed to update task`);
 		},
 	});
 
@@ -310,6 +374,11 @@ export const useCompletedTasks = (queryParams: QueryParams<Task>) => {
 	return useQuery(getCompletedTasksQueryOptions(queryParams, headers));
 };
 
+export const useUserTasks = (search: string) => {
+	const { headers } = useToken();
+	return useQuery(getUserTasksQueryOptions(search, headers));
+};
+
 /**
  * Custom hook to create a new task
  * @returns The mutation object
@@ -318,6 +387,16 @@ export const useCreateTask = () => {
 	const { headers } = useToken();
 	const queryClient = useQueryClient();
 	return useMutation(createTaskMutationOptions(headers, queryClient));
+};
+
+/**
+ * Custom hook to update a task
+ * @returns The mutation object
+ */
+export const useUpdateTask = () => {
+	const { headers } = useToken();
+	const queryClient = useQueryClient();
+	return useMutation(updateTaskMutationOptions(headers, queryClient));
 };
 
 /**
