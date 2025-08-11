@@ -14,15 +14,16 @@ import { formatDate } from "@/lib/formatDate";
 type Props = {
 	date: Date | undefined;
 	onChange: (date: Date | undefined) => void;
+	className?: string;
 	calendarProps?: Omit<CalendarProps, "mode" | "selected" | "onSelect">;
 };
 const DatePicker: FC<Props> = (props) => {
-	const { date, onChange, calendarProps } = props;
+	const { className, date, onChange, calendarProps } = props;
 
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant="outline">
+				<Button variant="outline" className={className}>
 					<CalendarDays className="size-4" />
 					<span className="text-xs text-muted-foreground">
 						{date ? formatDate(date) : "Select a date"}
