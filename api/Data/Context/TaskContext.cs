@@ -1,5 +1,6 @@
 using api.Models.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace api.Data.Context
 {
@@ -40,6 +41,11 @@ namespace api.Data.Context
       modelBuilder.Entity<TaskModel>()
         .HasMany(t => t.Tags)
         .WithMany(tag => tag.Tasks);
+
+      modelBuilder.Entity<TaskModel>()
+        .Property(t => t.Order)
+        .ValueGeneratedOnAdd()
+        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
   }
 }

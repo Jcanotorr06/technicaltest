@@ -8,6 +8,7 @@ namespace api.Models.Data
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string CreatedBy { get; set; } = string.Empty;
+    public bool IsPublic { get; set; }
 
     public ICollection<TaskModel> Tasks { get; set; } = new List<TaskModel>();
   }

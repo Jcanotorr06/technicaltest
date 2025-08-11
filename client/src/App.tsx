@@ -1,11 +1,13 @@
-import { Button } from "@/components/ui/button";
+import { RouterProvider } from "@tanstack/react-router";
+import type { FC } from "react";
+import { router } from "./main";
+import { useToken } from "./context";
 
-const App = () => {
-	return (
-		<div className="flex min-h-svh flex-col items-center justify-center">
-			<Button>Click Me</Button>
-		</div>
-	);
+const App: FC = () => {
+  const tokenContext = useToken();
+  return <RouterProvider router={router} context={{ tokenContext }} />;
 };
+
+App.displayName = "App";
 
 export default App;

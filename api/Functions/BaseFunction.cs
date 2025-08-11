@@ -1,4 +1,5 @@
 using System.Net;
+using api.Helpers;
 using api.Models.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,11 +20,16 @@ namespace api.Functions
     /// <param name="_logger">Logger instance for logging errors</param>
     /// <returns>Action result indicating success or failure</returns>
     public async Task<IActionResult> TryExecute(
-      Func<Task<IActionResult>> method, string invocationId, ILogger _logger
+      Func<Task<IActionResult>> method, string invocationId, ILogger _logger, string token = ""
     )
     {
       try
       {
+        var validToken = await JWTHelper.ValidateToken(token, _logger);
+        if (!validToken)
+        {
+          return new UnauthorizedResult();
+        }
         return await method();
       }
       catch (Exception ex)
