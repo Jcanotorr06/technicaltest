@@ -37,7 +37,7 @@ jobs:
   build_and_deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    environment: dev
+    environment: client
     name: Build and Deploy
     steps:
       - uses: actions/checkout@v4
