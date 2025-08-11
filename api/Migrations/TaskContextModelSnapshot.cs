@@ -47,6 +47,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -100,6 +103,12 @@ namespace api.Migrations
 
                     b.Property<Guid>("ListId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order"));
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

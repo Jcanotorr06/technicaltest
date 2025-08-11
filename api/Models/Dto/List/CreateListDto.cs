@@ -12,5 +12,6 @@ namespace api.Models.Dto.List
     [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
     [MinLength(1, ErrorMessage = "Name must be at least 1 character long.")]
     public string Name { get; set; } = string.Empty;
+    public bool IsPublic { get; set; }
   }
 }

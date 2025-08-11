@@ -22,7 +22,7 @@ namespace api.Data.Repositories.Implementations
     /// <returns>The list with the specified identifier, or null if not found.</returns>
     public async Task<ListModel> GetListByIdAsync(Guid listId, CancellationToken cancellationToken = default)
     {
-      var list = await FindOneAsync(l => l.Id == listId, cancellationToken);
+      var list = await FindOneAsync(l => l.Id == listId, l => l.Tasks, cancellationToken);
       return list;
     }
 
@@ -33,7 +33,7 @@ namespace api.Data.Repositories.Implementations
     /// <returns>A collection of all lists.</returns>
     public async Task<IEnumerable<ListModel>> GetAllListsAsync(CancellationToken cancellationToken = default)
     {
-      var lists = await GetAllAsync(cancellationToken);
+      var lists = await GetAllAsync(l => l.Tasks, cancellationToken);
       return lists;
     }
 
@@ -45,7 +45,18 @@ namespace api.Data.Repositories.Implementations
     /// <returns>A collection of lists created by the specified user.</returns>
     public async Task<IEnumerable<ListModel>> GetUserListsAsync(string userId, CancellationToken cancellationToken = default)
     {
-      var lists = await FindManyAsync(l => l.CreatedBy == userId, cancellationToken: cancellationToken);
+      var lists = await FindManyAsync(l => l.CreatedBy == userId, l => l.Tasks, cancellationToken);
+      return lists;
+    }
+
+    /// <summary>
+    /// Retrieves all public lists.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>A collection of public lists.</returns>
+    public async Task<IEnumerable<ListModel>> GetPublicListsAsync(CancellationToken cancellationToken = default)
+    {
+      var lists = await FindManyAsync(l => l.IsPublic == true, l => l.Tasks, cancellationToken);
       return lists;
     }
 

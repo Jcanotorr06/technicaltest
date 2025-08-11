@@ -23,10 +23,8 @@ namespace api.Models.Data
     public Guid ListId { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public string AssignedTo { get; set; } = string.Empty;
-
-    [JsonIgnore]
+    public int Order { get; set; }
     public TaskStatusModel _Status { get; set; }
-    [JsonIgnore]
     public ListModel _List { get; set; }
     public ICollection<TagModel> Tags { get; set; } = new List<TagModel>();
   }

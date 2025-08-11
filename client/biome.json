@@ -6,7 +6,13 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": [
+      "src/**/*.{ts,tsx}",
+      "!**/*.gen.ts",
+      "src/**/*.{js,jsx}",
+      "src/**/*.css"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -15,7 +21,10 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "useExhaustiveDependencies": "info"
+      }
     }
   },
   "javascript": {
@@ -23,6 +32,7 @@
       "quoteStyle": "double"
     }
   },
+
   "assist": {
     "enabled": true,
     "actions": {

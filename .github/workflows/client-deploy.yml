@@ -51,7 +51,14 @@ jobs:
           app_location: ${{ env.APP_LOCATION }}
           api_location: ${{ env.API_LOCATION }}
           output_location: ${{ env.OUTPUT_LOCATION }}
-
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_FUNCTIONS_KEY: ${{ secrets.VITE_FUNCTIONS_KEY }}
+          VITE_APIM_KEY: ${{ secrets.VITE_APIM_KEY }}
+          VITE_CLIENT_ID: ${{ secrets.VITE_CLIENT_ID }}
+          VITE_CLIENT_AUTHORITY: ${{ secrets.VITE_CLIENT_AUTHORITY }}
+          VITE_REDIRECT_URI: ${{ secrets.VITE_REDIRECT_URI }}
+          VITE_LOGOUT_URI: ${{ secrets.VITE_LOGOUT_URI }}
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
