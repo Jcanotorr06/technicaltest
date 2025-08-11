@@ -1,8 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, PlusCircle } from "lucide-react";
-import { type FC, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
 	AutoSizedTextArea,
 	Button,
@@ -24,17 +19,22 @@ import {
 	CommandItem,
 	DatePicker,
 } from "@/components/molecules";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useToken } from "@/context";
+import { cn } from "@/lib/utils";
 import {
 	getListsQueryOptions,
 	getPublicListsQueryOptions,
 	useCreateTask,
 } from "@/services";
-import { useToken } from "@/context";
-import { cn } from "@/lib/utils";
-import { CommandEmpty, CommandGroup, CommandList } from "cmdk";
-import { useParams } from "@tanstack/react-router";
 import type { CreateTaskRequest } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "@tanstack/react-router";
+import { CommandEmpty, CommandGroup, CommandList } from "cmdk";
+import { ChevronDown, PlusCircle } from "lucide-react";
+import { type FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const today = new Date();
 const yesterday = new Date(today);
@@ -248,7 +248,14 @@ const AddTaskForm: FC<Props> = (props) => {
 								>
 									Cancel
 								</Button>
-								<Button type="submit">Add Task</Button>
+								<Button
+									type="submit"
+									disabled={
+										form.formState.isSubmitSuccessful || createTask.isPending
+									}
+								>
+									Add Task
+								</Button>
 							</CardFooter>
 						</Card>
 					</form>
