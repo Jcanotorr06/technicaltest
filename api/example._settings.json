@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "Environment": "DEV", // Change to Local to bypass API authentication for testing purposes
+    "SQLConnectionString": "",
+    "DatabaseName": "",
+    "APIMSubscriptionKey": "",
+    "OpenIdConfiguration": "",
+    "TokenIssuer": "",
+    "TokenAudience": ""
+  }
+}
