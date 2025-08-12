@@ -123,7 +123,7 @@ See the generated [API documentation](https://jcanotorr06.github.io/technicaltes
 
 ## Architecture
 
-[Architecture](./docs/README.md)
+[Architecture](./docs/Architecture/README.md)
 
 ## What Could Be Improved
 
